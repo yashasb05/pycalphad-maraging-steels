@@ -104,3 +104,21 @@ After a 5-hour isothermal ageing treatment (preceded by a $10^\circ\text{C/min}$
     *   `fig8_phase_fractions.png` (Precipitate and austenite kinetics)
     *   `fig9_radius_aspect.png` (Radius and aspect ratio evolution)
     *   `fig10_yield_strength.png` (Yield strength during isothermal hold)
+
+---
+
+## 7. Results
+
+## 1. Equilibrium Phase Fractions Evolution
+ <img width="1711" height="680" alt="fig2_phase_fraction_vs_T" src="https://github.com/user-attachments/assets/e9cb0243-032b-429b-9782-d643aecbeed4" />
+
+## 2. Phase Fraction Evolution of Ni3Ti and Reverted Austenite 
+<img width="1723" height="698" alt="fig8_phase_fractions" src="https://github.com/user-attachments/assets/cec7097a-5274-4e6a-b24f-5e5e3c5409a4" />
+
+## 3. Radius and Aspect Ratio Evolution of Ni3Ti
+<img width="1688" height="698" alt="fig9_radius_aspect" src="https://github.com/user-attachments/assets/515e76f4-64d3-4d21-b3aa-6d515849da58" />
+
+## 4. Yield Strength of Microstructure Evolution and Precipitation 
+<img width="1735" height="698" alt="fig10_yield_strength" src="https://github.com/user-attachments/assets/b824780e-0ccd-4054-a437-deef884a772a" />
+
+---
