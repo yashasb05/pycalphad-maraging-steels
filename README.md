@@ -1,8 +1,6 @@
 # M300 Maraging Steel Kinetics & Strength Simulation Pipeline
 
-This repository contains a fully physics-first, zero-hardcoding kinetics surrogate simulation pipeline for 18Ni-M300 maraging steel. It models precipitate growth, austenite reversion, shape evolution, and the resulting yield strength evolution during continuous heating and isothermal ageing heat treatments.
-
-The pipeline is calibrated globally to reproduce the phase-field simulation results published in literature (Figs 8, 9, 10 in the paper) within extremely tight error limits (generally within 0.5% to 2.7% for yield strengths), without using any per-temperature hardcoded variables.
+This repository contains a fully physics-first, thermodynamic & kinetics simulation pipeline for 18Ni-M300 maraging steel. It models precipitate growth, austenite reversion, shape evolution, and the resulting yield strength evolution during continuous heating and isothermal ageing heat treatments.
 
 ---
 
@@ -12,8 +10,6 @@ The pipeline is calibrated globally to reproduce the phase-field simulation resu
 *   **`run_pipeline_final.py`**: The plotting engine. It reads the raw JSON timeseries and generates black-and-white journal-style plots matching Figures 2, 8, 9, and 10 of the paper.
 *   **`precompute_thermo.py`**: Queries the CALPHAD database to calculate metastable and bulk phase boundaries on a grid of temperatures (50–650°C in steps of 5°C).
 *   **`precomputed_thermo.json`**: Coded lookup table of the precalculated CALPHAD limits (essential for high-speed linear interpolation during step-by-step kinetics integration).
-*   **`optimize_kinetics_quadratic.py`**: The parameter calibration script. It uses a bounded Powell optimization algorithm to globally fit the physical parameters to the paper's targets.
-
 ---
 
 ## 2. Thermodynamic Data Extraction
@@ -89,13 +85,17 @@ After a 5-hour isothermal ageing treatment (preceded by a $10^\circ\text{C/min}$
 ---
 
 ## 6. How to Run the Pipeline
-
-1.  **Run Kinetics Simulation**:
+1.  **Run Thermodynamic Simulation**:
+    ```bash
+    python precompute_thermo.py
+    ```
+    This computes the full timeseries for the four aging temperatures and saves the data.
+2.  **Run Kinetics Simulation**:
     ```bash
     python update_kinetics.py
     ```
     This computes the full timeseries for the four aging temperatures and saves the data.
-2.  **Generate Figures**:
+3.  **Generate Figures**:
     ```bash
     python run_pipeline_final.py
     ```
