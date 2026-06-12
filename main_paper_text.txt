@@ -1,0 +1,348 @@
+Computational Materials Science 231 (2024) 112590
+Full Length Article Contents lists available at ScienceDirect Computational Materials Science journal homepage:  www.elsevier.com/locate/commatsciFull Length Article Contents lists available at ScienceDirect Computational Materials Science journal homepage:  www.elsevier.com/locate/commatsciPhase field study of heat treatment and strengthening in maraging steels
+Full Length Article
+Contents lists available at
+ScienceDirect
+Computational Materials Science
+journal homepage:
+www.elsevier.com/locate/commatsci
+Full Length Article
+Contents lists available at
+ScienceDirect
+Computational Materials Science
+journal homepage:
+www.elsevier.com/locate/commatsci
+Rajeev Ahluwalia*, Jakub Mikula, Yingzhi Zeng, Robert Laskowski, Kewu Bai, Guglielmo Vastola, Yong-Wei Zhang
+Institute of High Performance Computing (IHPC), Agency for Science, Technology and Research (A*STAR), 1Fusionopolis Way #16-16 138632 Singapore
+A B S T R A C T
+Martensite decomposition during heat treatment of maraging steels is a complex process, in which different precipitates as well as austenite phase can grow concurrently. Here, we formulate a phase field model to study the martensite decomposition by taking into account the nucleation and growth of phases as well as phase transformation-induced elastic and plastic deformations. To model 18Ni M300 maraging steel, a pseudo ternary Fe-Ni-Ti model is parameterized by using the thermodynamic and kinetic data of the alloy. The effect of transformation induced elastic and plastic strains is incorporated using an elastoplastic model. Using this model, we investigate the decomposition of the martensite phase during continuous heating as well isothermal ageing, focusing on the growth of precipitates as well that of the reverted austenite phase. The data generated from the simulations, in conjunction with an empirical model, are used to estimate the variation of yield strength as a function of temperature and ageing time. The temperature dependence of strength obtained is qualitatively consistent with the experimental data of maraging steel, and thus sheds light on how underlying strengthening mechanisms depend on the ageing temperature and time. In particular, the simulations reveal the important role played by reversed austenite on the temperature dependence of the strength.
+1. Introduction
+Maraging steels are a class of low carbon steels that have a high strength as well as high toughness and ductility [1–2]. These steels transform from austenite to martensite at moderate cooling rates. The term “Maraging” refers to ageing of the martensite phase that leads to precipitation of fine secondary phases, which are responsible for the strengthening [3–4]. The ageing process also leads to the formation of reverted austenite phase [3–5] that contributes to the toughness and ductility. Typically, maraging steels have a low carbon concentration (<0.03 percent) and relatively high nickel concentration (17–19 wt%) along with smaller concentrations of other elements such as Co, Mo, Al and Ti. The dominant secondary phases that are observed after ageing are Ni3Ti, Ni3Mo and Fe2Mo [3,6].
+Upon cooling from the face-centered cubic (FCC) austenite phase, maraging steels form the “lath martensite” microstructure, where the 24 variants of the body-centered cubic (BCC) martensite arrange into a hierachical microstructure [7]. A typical prior austenite grain is divided into “packets”, where each packet has variants that share a habit plane. The packets are further subdivided into “blocks” that have variants with the same axis of lattice distortion. Each block contains the “laths” that are single crystal variants having a low misorientation with each other. During ageing processes, this martensitic microstructure is subjected to isothermal heat treatments that lead to a decomposition of the martensite phase, where nanoscale precipitates grow within the laths while reverted austenite grows from the block/lath interfaces. This decomposition is crucial to the mechanical behavior of maraging steels and has been extensively studied experimentally for conventionally processed [3–4] as well as for additively manufactured maraging steels [8–10].
+Martensite decomposition is a complex process whereby different precipitates can grow concurrently with the growth of the reverted austenite [4–5]. Therefore, it is important to develop theoretical/ simulation models to understand the connections among heat treatment conditions, corresponding phase evolutions and resulting strengthening of maraging steels. There have been some studies on the maraging steel decomposition based on empirical models of precipitate strengthening [11–13]. However, these approaches do not consider the evolution of the phases and describe the strengthening enhancement using the empirical Johnson-Mehl-Avarami-Kolmogorov (JMAK) type models. On the other hand, a more physics-based model was proposed by E Galindo- Nava et al., where the reversion of austenite from lath boundaries and the growth of precipitates inside the laths were modeled for a large number of maraging steels [14]. Although this model incorporated the underlying nucleation and growth of the precipitates, it is mean field and does not describe the morphological evolution which is also important to understand the mechanical behavior.
+* Corresponding author.
+E-mail address: rajeev@ihpc.a-star.edu.sg (R. Ahluwalia).
+https://doi.org/10.1016/j.commatsci.2023.112590
+Received 27 June 2023; Received in revised form 17 October 2023; Accepted 17 October 2023   Available online 3 November 2023
+0927-0256/© 2023 Elsevier B.V. All rights reserved.
+The classical orowan mechanism suggests that the decrease of
+strength at long times (overaging) is due to coarsening of the precipitates. However, the ageing process also leads to growth of reveresed austenite, which is a softer phase. It is also important to understand how the growth of this reverted austenite influences the strength, which could be useful to select heat treatments that can optimize the mechanical properties. The present study simulates the morphological evolution during aging and also seeks to understand the connection between the phase/microstructure evolution and the strength. Importantly, we seek to understand the role played by reversed austenite growth on the strength, compared to the usual precipitate coarsening mechanism.
+In recent years, the phase field approach has been shown to be a powerful method to simulate the microstructure of materials undergoing solid-state phase transformations. It has been applied to diffusion-less (martensitic) [15–18] as well as diffusional transformations such as precipitate growth [19–20]. The method has also been extensively applied to study the microstructure and phase transformations in steel [21]. While most of the studies focus on the austenite to martensite/ ferrite transformation, there are some studies that used phase field approach to model the problem of austenite reversion [22–24]. However, except the work by Borukhovich et al. [25] where cementite growth during tempering was studied, concurrent growth of precipitates along with the reverted austenite has not been studied using the phase field approach. In the present work, we apply the phase field method to simulate the decomposition of martensite in 18Ni maraging steel. Since the precipitate sizes in this alloy are small (~10–40 nm) and the typical lath widths are in the range of 100–300 nm, we model the system at the lowest level in the hierarchy of the lath martensite microstructure as depicted in Fig. 1. Based on experimental observations, we adopt the following procedures: The precipitates nucleate within the laths and the reverted austenite initiates at the lath boundaries.
+The model is parameterized for the 18Ni 300 maraging steel using thermodynamic and kinetic data available in literature. Elastic and plastic strains arising from the transformation-induced strains are taken into account.
+The paper is organized as follows. Section 2 provides the details of the phase field model, including the thermodynamic, kinetic, nucleation as well as elastoplastic models. Section 3 discusses simulation results for continuous heating as well as isothermal annealing. An empirical model for strengthening is also used to examine the effect of temeperature and ageing time on the yield stress. Finally, the paper is ended with a conclusion and outlook.
+2. Model
+2.1. Phase field model
+To describe the martensite decomposition, the martensite BCC phase is the matrix and Ni3Ti precipitates as well as the reverted austenite are the product phases. Henceforth, the martensite is denoted as α′, the Ni3Ti variants as ∅i(i = 1,..12) and the reverted FCC austenite phase as γ. We consider a 13-component vector order parameter ∅⇀ such that the matrix phase α′ is described by the case where all components of the order parameter vanish, i.e. ∅⇀ = 0. The product phases/variants are represented by ∅v=m ∕= 0 and ∅v=∕m = 0, where the index m denotes the appropriate phase or variant. Here, m = 1 represents the reverted austenite and the 12 Ni3Ti variants are denoted by m = 2,⋯.,13. The total free energy density is the sum of interfacial part fint, chemical part fchem and the elastic part fel. The total free energy is given as
+∫
+F =dV(fint +fchem +fel)(1)
+The interfacial contribution is expressed in terms of the order parameter and its gradients by the following equation:
+fint 22
+v=(2)
+v′
+v=∕v′
+The quantities Wγ, Wη represent the free energy barriers between the BCC α′ and the reverted austenite γ and between the BCC α′ and the Ni3Ti η phases, respectively. Kγ, Kη are the corresponding gradient coefficients.Wγ, Wη, Kγ and √̅̅̅ Kη can be obtained by using the standard re√̅̅̅ √̅̅̅ lations √̅̅̅ Wγ = 6σγ/ 2Δ, Kγ = 3 2σγΔ, Wη = 6ση/ 2Δ and Kη =
+2σηΔ. Here σγ is the interfacial energy between the α′ and the reverted austenite γ, and ση is the interfacial energy between α′ and Ni3Ti precipitates. The interfacial width Δ is assumed to be the same for all interfaces The last term in Eq. (2) ensures that for a large enough value of ξ, only one of the N components of order parameter vector →n is non- zero.
+Fig. 1. Schematic showing the lowest level of the hierarchical lath martensite microstructure. Here the precipitates nucleate inside the laths and the reverted austenite grows at the lath boundaries.
+It should be remarked that in the present model, it is only possible to independently assign the interfacial energies between the parent BCC phase and the product phases. This leads to a condition that does not allow the product phases/variants to touch each other. For alloys where phase amounts are low and precipitates are mostly isolated, the interfacial energy between the product phases does not influence the growth significantly and therfore this model has been extensively used for simulating solid–solid phase transformations [26–28].
+The chemical free energy density is written as:
+()
+∑13′(α′ ,XTiα′ ,XNiα′ ) +h(∅1)Gγ(XFeγ ,XTiγ ,XNiγ ) fchem =1−h(∅v)Gα XFe
+13 v=1(ηηη )(3)
+∑
++h(∅v)Gγ XFe,XTi,XNi
+v=2
+Here h(∅v) = ∅v3( 6∅v2 − 15∅v +10) is an interpolating function, Gα′,Gγ and Gη are the Gibbs free energies of the BCC martensite, reverted austenite and Ni3Ti precipitates, respectively. Following the method introduced by Kim, Kim and Suzuki [29], we have introduced auxiliary composition variables XFeα′ ,XTiα′ ,XNiα′ ,XFeγ ,XTiγ ,XNiγ ,XFeη ,XTiη ,XNiη . The auxiliary compositions are obtained from the actual compositions field by solving the following set of equations:
+∂Gγ∂Xγ=∂Gα′∂Xα′=∂η∂Xηi=∂Gγ∂Xγ=∂Gα′∂Xα′=∂η∂Xηi=G
+∂
+G
+γ
+∂
+X
+γ
+=
+∂
+G
+α
+′
+∂
+X
+α
+′
+=
+∂
+η
+∂
+X
+η
+i
+=
+∂
+G
+γ
+∂
+X
+γ
+=
+∂
+G
+α
+′
+∂
+X
+α
+′
+=
+∂
+η
+∂
+X
+η
+i
+=
+μi(4)
+ii
+()
+∑13′∑13
+Xi =1−h(∅v)Xiα +Xiγh(∅1)+Xηih(∅v)(5)
+v=1v=2
+The decomposition of martensite also leads to strain energy that arises from misfit strain between the matrix and the product phases. The associated elastic energy density is expressed as
+fel Cijkleijekl(6)
+ijkl
+For simplicity, we adopt a homogeneous modulus approximation, that is, the elastic tensor Cijkl is the same for all the phases. The elastic strain tensor eij can be expressed using the displacement variables and transformation strains as
+()
+∑13
+eij = εij −εγijh(∅1)+εηijυh(∅v)− δijεth − εpij(7)
+v=2
+Here εγij are the components of transformation strain tensor for the γ phase, and εηijυ,υ = 2⋯,13 are the transformation strain tensors associated with the 12 Ni3Ti variants. The calculation of these transformation strains is described in section 2.4. Further, due to the large transformation strains associated with the formation of reverted austenite, the plastic deformation associated with the transformation must also be taken into account. The plastic strains in εpij are obtained using standard continuum plasticity approach, which is described in section 2.5. εth represents the thermal strain. The strain tensor is calculated by using the ( ) displacement fields ui as εij = 1/2 ∂ui/∂xj +∂uj/∂xi +εij and the stress tensor is calculated as σij = ∂fel/∂εij. For a macroscopically stress-free system, εij is chosen such that all stress components average to zero.
+It should be pointed out that we have used the small strain approximation in the present work, which may not be accurate, particularly for the martensite-austenite transformation. However, due to the complexity in implementing the finite strain theory, the small strain approximation has been used extensively in literature for simulating martensitic transformation in steels. It is understood that although the stress fields may not be accurate, the generic microstructure can still be described [24,30]. Therefore, the small strain approximation has also been adopted in the present work.
+The kinetics of the transformation is described by the following set of equations:
+(9)
+()
+∂∑()()
+∂tkk,Lik =jδij − Xiδjk − Xj XkMk(10)
+∂σij∂fel
+∂xi = 0,σij = ∂εij(11)
+The evolution of the order parameters is described by equation (9). Here, Γγ is the interfacial mobility associated with the α′ /FCC interface and Γη is the interfacial mobility of the α′ / Ni3Ti precipitate interfaces. The multi-component diffusion equations (equation (10) describes the evolution of the compositions and Mk is the atomic mobility of component k. The kinetics is simulated by solving equations (9–10) such that mechanical equilibrium condition in equation (11) is satisfied at every instant so that that displacement fields and elastic strains can be calculated.
+2.2. Thermodynamic model for Fe-Ni-Ti alloy
+A ternary Fe-Ni-Ti system is used as a model system for the maraging steel. Note that we are using a pseudo-ternary approximation and Ni and Ti here represent a combination of components, rather than pure solutes. In the present work, we are interested in the growth of Ni3Ti precipitates and reverted austenite from the α′ matrix. Here, we choose the pseudo alloy composition as XNi0 = 0.172,XTi0 = 0.008 and XFe0 = 0.819. This choice leads to phase diagrams that are consistent with those for the alloy 18Ni M300 (see Fig. 2), which is the reference alloy for the present work. Using a pseudo-ternary database for this alloy [31], Gibbs free energies for pseudo compositions XNii , XTii , i = α′,γ and η phases in terms of the compositions, were formulated using the parabolic approximation. The Gibbs free energies were expressed as
+ANii (i,eq)2ATii (i,eq)2
+Gi(XNi,XTi) =XNi − XNi+ XTi − XTi
++2 AiNi,Ti( XTi − XTii,eq)(2XNi − XNii,eq) +BTii ( XTi − XTii,eq)(12)
+Ni(i,eq)
++BiXNi − XNi+Geqi
+Here, the quantities ANii , ATii , ANii ,Ti, BTii , BNii , XNii,eq,XTi i,eq and Geqi can be obtained by using the pseudo-ternary database for Fe-Ni-Ti following the methodology described in earlier works [18].
+2.3. Model for atomic mobilities
+To describe the kinetics of the alloy components, the atomic mobilities Mk are required. Typically, the atomic mobilities can be obtained from kinetic databases and expressed as
+()
+1− Qi
+Mi =exp(13)
+RTT
+where
+[]
+∑rp,q()r
+QiXpXqQiXp − Xq(14)
+ppp>qr=0,1,2
+Here the phases are represented by i = α′ ,γ and η. In the present work, the mobility parameters for the matrix α′ are chosen using kinetic databases for TiAlNi [32] and TiAlFe [33]. Similarly, the mobility parameters for γ are chosen from ref [34].
+2.4. Transformation strains and elastic constants
+As discussed in section 2, the decomposition of martensite leads to
+Fig. 2. Equilibrium phase fractions for Ni3Ti precipitates (A) and reverted austenite (B) obtained from the Fe-Ni-Ti ternary database.
+Table 1
+Orientation relationship between the Ni3Ti precipitates (η) and the martensite phase (M) for all the 12 precipitate variants.
+Variant
+Orientational Relationship
+1
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 211 >α′ ,< 001 >η‖< 011 >α′
+2
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 211 >α′ ,< 001 >η‖< 011 >α′
+3
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 211 >α′ ,< 001 >η‖< 011 >α′
+4
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 211 >α′ ,< 001 >η‖< 011 >α′
+5
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 112 >α′ ,< 001 >η‖< 110 >α′
+6
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 112 >α′ ,< 001 >η‖< 110 >α′
+7
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 112 >α′ ,< 001 >η‖< 110 >α′
+8
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 112 >α′ ,< 001 >η‖< 110 >α′
+9
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 121 >α′ ,< 001 >η‖< 101 >α′
+10
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 121 >α′ ,< 001 >η‖< 101 >α′
+11
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 121 >α′ ,< 001 >η‖< 101 >α′
+12
+< 100 >η‖< 111 >α′ ,< 010 >η‖< 121 >α′ ,< 001 >η‖< 101 >α′
+transformation strains due to the lattice misfit between the parent martensite and product phases. The elastic energy in equations (6–7) requires the transformation strains associated with the product phases. The transformation strains can be computed if the lattice parameters of the parent and product phases as well as the orientational relationships between them are known. In this section, we compute the transformation strains between the martensite and the Ni3Ti as well the reverted austenite.
+The orientation relationship between the martensite and the Ni3Ti precipitates is given in Table 1 for all the 12 variants [35]. The transformation strains for each variant can be calculated using the lattice parameters. In the present model, we use the transformation strain matrix for Ni3Ti precipitates suggested in reference [35]. The transformation expressed in the reference frame of the precipitate is shown in Table 2 and that in the martensite frame of reference is shown in Table 3.
+For the reverted austenite, the relationship between the BCC martensite and FCC austenite is the Kurudjmov-Sachs (KS) relationship given as {011}α′‖{111}γ and < 111 >α′ || < 101 >γ. [23]. For both the forward as well as the reversed transformation, this orientation relationship leads to 24 equivalent variants of the product phase. In the present work, we are interested in the martensite to reverted austenite transformation. This reversed transformation is achieved by a lattice distortion followed by a rigid body rotation such that the KS relationship can be realized. For each variant, the structural change is described by a transformation matrix T that can be decomposed into stretch and rotation T = RB. Here, B describes the lattice distortion that can be computed in terms of the lattice parameters and R is the rotation matrix for the rigid body rotation required to achieve the KS relationship. The
+Table 2
+Transformation strain matrix for Ni3Ti in the precipitate reference frame
+X‖ < 100 >η,Y‖ < 010 >η and Z‖ < 001 >η
+⎡⎤
+− 0.112900
+⎣ 00.08650 ⎦ 000.0211
+Table 3
+Corresponding transformation strains in the martensite reference frame given by
+X‖ < 100 >α′ ,Y‖ < 010 >α′ and Z‖ < 001 >α′ .
+⎡⎤
+− 0.0464− 0.06650.0665
+⎣− 0.06650.02060.0005⎦ + 11 symmetry related variants  0.06650.00050.0206
+associated transformation strain can be calculated within the small strain theory as
+γ1 (T )
+ε =  T +T− I(15)
+2
+Although, in principle, the reverted austenite can form 24 transformation variants, some studies show that the reverted austenite can take same orientation as the prior austenite grain (austenite memory) [36]. Motivated by these studies, we assume that only one variant of the reverted austenite nucleates at the lath boundary. We choose the variant defined by (111)γ‖(011)α′ and [111]α′‖[101]γ. The transformation strain matrix for this variant is shown in Table 4.
+In addition to the transformation strains, the thermal strains can also be calculated as εth = αT(T − Tref), where αT is a linear coefficient of thermal expansion and Tref is a reference temperature at the start of heating/cooling. In the present work, we choose αT = 11.3× 10− 6/K. For simplicity, we assume homogeneous elastic moduli for all the phases and following [35], we choose C11 = 187GPa, C12 = 121.2GPa and C44 = 65.7GPa.
+2.5. Plasticity model
+The large transformation strains that arise during austenite reversion
+Table 4
+Transformation strains for the reverted austenite in the martensite reference
+frame given by X‖ < 100 >α′ ,Y‖ < 010 >α′ and Z‖ < 001 >α′ .
+⎡⎤
+− 0.1241− 0.0052− 0.0181
+⎣− 0.0052− 0.1346− 0.0285⎦
+− 0.0181− 0.02850.2230
+can lead to large internal stresses, which can in turn induce localized plastic deformations. Therefore, it is important to incorporate the effect of plastic deformations. Plastic deformations are modelled using the conventional J2-flow theory [37–38] derived from the von-Mises yield surface:
+)
+f(σ) =p(16)
+where σdev stands for the deviatoric part of the stress tensor σ, σiy is the yield stress and Hi is the hardening coefficient of a given phase. Furthermore, it is assumed that the total strain increment Δε can be decomposed into Δε = Δεel + Δεp + Δε0, where Δεel is related to elastic deformations, Δεp to plastic deformations, and Δε0 represents all other strain contributions (such as thermal or transformation strains).
+√̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅The equivalent plastic strain increment is defined by Δεp =
+plastic deformation history is defined by 23 Δεpi : Δεpi . The total accumulated plastic strain as a measure of εp = ∑ Δεp. The standard predictor–corrector approach with radial-return algorithm is employed to solve the equations numerically, where the stress at the end of the time increment ⃒(i+1) is updated according to
+⃒
+⃒⃒ . The trial stress σtri+1 is predicted by i+1 assuming a purely elastic response. For the case of isotropic elasticity, the scalar plastic multiplier Δλ during the plastic flow can be derived from the consistency conditions f˙ = 0 forcing the stress state to remain on the yield surface:
+3f Δλ = 2 3G + H,(17)  where G is the shear modulus. Finally, the plastic strain tensor εpij is incremented by Δ devtr . The constitutive model is updated
+σ:σ at every time step of the phase field model. Since the aim here is not to model the mechanical properties, ideal plasticity is used for the yield stresses of martensite σαy ′ and reverted austenite σyγ . Temperature- dependent yield stresses are assumed as σiy = R(T)σi0y, where σi0y is the room temperature yield stress of a given phase. The precipitate yield stress is set to large value (ση0y = 500 GPa) so that Ni3Ti precipitates do not yield. The martensite yield stress is taken as σα0′y = 1000MPa and the austenite yield stress is σ0γy = 250 MPa. The function R(T) is obtained from linear fits of the generic temperature dependence of yield stresses of steel reported in literature [39]. R(T) linearly decreases from 1 to 0.75 from room temperature to 400 ◦C and decreased to 0.1 until 800 ◦C . It is taken that yield stresses do not decrease any further above 800 ◦C.
+2.6. Nucleation model
+It is known that precipitates in maraging steels nucleate within the martensite laths [3]. In this work, we use a classical nucleation theory to describe the continuous nucleation of Ni3Ti precipitates. The nucleation rate for the precipitate is given as
+√̅̅̅̅eff(3)
+2VmσηDη16πσηfη
+Jη = Nη A√̅̅̅̅̅̅b ̅ a4 exp − 3(ΔGnuc)2kbT . (18)  N k T
+Here Vm, kbT, a are the molar volume, Boltzmann temperature factor, and the lattice constant, respectively. ση is the interfacial energy between the martensite and Ni3Ti precipitates. Assuming that precipitates
+()1/3
+nucleate from dislocations, we assume Nη = ρ VNmA [40], where ρ is the dislocation density, NA is the Avogadro’s number and vm is the molar volume. Here fη is considered as an adjustable parameter which controls the temperature dependence of the nucleation rate. The effective diffusivity Deff is calculated using the formula [40]:
+⎛()2 ⎞− 1
+Deff = ⎜⎝∑cXXceqc,,η0RTM− Xcc,0,0 ⎠⎟, c = Fe,Ni,Ti(19)
+Mc,0 is the atomic mobility of in the martensite phase, and ΔGvnuc is the driving force for nucleation of v phase and can be approximated by:
+(() )
+Xc,α’ VmcXceq,α’, c = Fe,Ni,Ti(20)
+Using the nucleation rate Jη, the probability of seeding a nuclei of Ni3Ti can be computed
+Pη = 1− exp(− JηΔtΔV)(21)  where Δt is the time step and ΔV is the volume of a single grid point.
+During heating or ageing process, reversed austenite grows from the lath boundaries [5,14]. In the present work, this effect is mimicked by assigning pre-existing nuclei at the beginning of the heating process. Further details are provided in the next section.
+2.7. Representative volume element
+As discussed earlier, the relevant length scale for the present work is at the lowest level in the hierarchy of the lath martensite microstructure. Our representative volume element (RVE) is a domain that includes two adjacent laths separated by a lath boundary (see Fig. 3). The Ni3Ti precipitates form inside the laths while the reverted austenite grows from the lath boundary. Nuclei of reverted austenite are assigned at the lath boundary at the beginning of the simulation, as shown in Fig. 3. The radius of individual nuclei is 8 nm and the areal density of ~ 690/(μm)2 at the lath boundary. Note that since the lath boundary seperates variants with very low misorientation, orientation difference between the adjacent laths is not taken into account, which allows periodic boundary conditions to be used. The RVE corresponds to a microstructure with lath width ~ 180 nm (note that typical experimentally observed lath widths are in the range 100–300 nm). On the other hand, the precipitates are nucleated continuously inside the laths using the probability defined in equation (21).
+3. Simulations
+In this section, we present results of the decomposition of martensite into Ni3Ti and the reverted austenite. The phase field equations (9–11) are solved using the finite difference method. The material parameters
+Fig. 3. Representative volume element used in the simulations. A lath boundary with pre-existing nuclei of austenite separates two adjacent laths.
+Table 5
+Material properties and model parameters used in the simulations.
+Grid spacing
+δ = 2 nm
+Interfacial width
+Δ = 10 nm
+Interfacial energies
+σγ = 0.6J/m2,ση = 0.2J/m2[14]
+Coupling coefficient ξ
+Interfacial mobility for reverted austenite
+Interfacial mobility for Ni3Ti precipitate
+ξ = 1.07 × 1011 J/m3
+()m2
+Γγ = 2.9× 105exp− 31089TNs
+() 2
+Γη = 2.9× 104exp− 31089TmNs
+chosen are shown in Table 5.
+Here it should be remarked that there is no available experimental data for the interfacial mobilities. The usual practice is to choose large interfacial mobilities so that growth is dominated by atomic diffusion. However, for the case of precipitate growth in the current model, there exists an upper bound, above which non-equilibrium compositions in precipitates are observed. Therefore, at each temperature, the interfacial mobility is chosen to avoid such non-equilibrium effects. The temperature-dependent mobility is then expressed using the Arrhenius form, as shown in Table 5. On the other hand, the interfacial mobility for the reverted austenite does not lead to non-equilibrium configurations, even for large values of interfacial mobility. In the present work, the interfacial mobility is chosen to be 10 times that for the precipitate case. 3.1. Benchmarking and continuous heating simulations
+In order to describe the growth of Ni3Ti precipitates, in addition to the parameters in Table 5, it is important to specify the nucleation rate. The parameters Nη and fη in equation (18) control the number of nuclei as well as the temperature dependence of the nucleation probability. These parameters may be obtained by using kinetic data such as time transformation temperature (TTT) curves [20]. The available data for time evolution precipitate fractions for maraging steels is limited. However, there are many reports of phase transformations during continuous heating [41–42]. In the present work, we benchmark our nucleation model by comparing our results with the precipitate start and finish temperatures obtained in continuous heating dilatometric data. Specifically, we compare with the dilatometric data on M300 maraging steel reported by Reis et al. [42]. According to their experiments, at a heating rate of 10 ◦C/min, the precipitation starts at ~ 500 ◦C and ends at ~ 595 ◦C. Considering the initial condition as shown in the Representative Volume Element (RVE) in Fig. 3, we numerically integrate the phase field equations while continuously increasing the temperature at a rate of 10 ◦C/min. Following reference [14], the dislocation density is set as ρ = 3.5x1014 /m2, which sets Nη. Several simulations for different values of the quantity fη were performed. It is found that for fη =
+0.0001, precipitation starts at ~ 500 ◦C and precipitates start to dissolve at ~ 600 ◦C, which is in the same range as reported by the dilatometric data [42]. This is shown in Fig. 4(a), where the fraction of Ni3Ti precipitates is shown as a function temperature along with the corresponding equilibrium data. Therefore, fη = 0.0001 is used for all the simulations reported in this paper. Fig. 4(b) shows the corresponding data for the reverted austenite. To compare with the dilatometric data, we also computed the average uniaxial strain as a function of the temperature (Fig. 4(c)). Although the austenite starts to grow at ~ 450 ◦C, significant contraction starts at ~ 600 ◦C, which is taken as the austenite start temperature of our simulations. Complete transformation to austenite starts after ~ 550 ◦C and 100 percent austenite is observed at ~ 750 ◦C. In comparison, the dilatometric data in reference [42] reported an austenite start temperature at 624 ◦C and a complete austenite transformation at 801 ◦C.
+The microstructure evolution associated with the continuous heating process as shown in Fig. 4 is shown in Fig. 5. Nuclei of reverted austenite merge to form a single domain and start growing into the lath. The precipitates also nucleate inside the laths and grow subsequently. At high temperatures, some precipitates start deviating from spherical shape due to elastic effects. Eventually, the entire RVE transforms to austenite.
+3.2. Simulations of isothermal ageing process
+Having benchmarked the model with continuous heating data, we now apply it to the problem of isothermal ageing. Starting from T = 50 ◦C, the temperature is ramped up at 10 ◦C/minute, followed by isothermal ageing for 5 h at T = 400 ◦C, T = 475 ◦C, T = 500 ◦C and T = 600 ◦C, respectively. Initial condition is the same as that in Fig. 5. Fig. 6 shows the final microstructure after ageing for the three temperatures of T = 400 ◦C, T = 500 ◦C and T = 600 ◦C. At T = 400 ◦C, very small precipitates are observed, and the reverted austenite domains have not grown substantially. The precipitates are larger for T = 500 ◦C and austenite grains have started to form a band at the lath boundary. At T = 600 ◦C, the austenite grows into the laths and the precipitate fraction is also observed to be larger compared to T = 500 ◦C.
+It is important to compare our simulated microstructures with those reported in recent literature. Jagle et.al analyzed precipitates using atom probe tomography for conventional as well as additively manufactured M300 steel and found that almost equiaxed Ni3Ti type precipitates of ~ 10 nm [6]. In our simulations also the Ni3Ti are equiaxed, although they are coarser (~16 nm) compared to those observed in experiments. Note this work also observed Ni3Mo and FeMo type precipitates which have not been modelled in the present work. Regarding the growth of reverted austenite, our results are consistent with SEM images for M300 steel [5]. For example, at T = 600 ◦C after 3 h of ageing, reversed austenite grains with volume fractions in the same range as those in the simulated images of Fig. 6 can be clearly seen. At T = 500 ◦C, the simulation results show slightly larger amount of reversed austenite compared to [5]. However, it is clearly observed that reversed austenite grows from lath boundaries, which is consistent with the present simulations.
+Fig. 4. Evolution of phase fraction of Ni3Ti precipitates (A) and reverted austenite (B) obtained from continuous heating simulations at a heating rate of 10 ◦C/min. The corresponding equilibrium phase fractions are also shown. Average uniaxial strain associated with the continuous heating (C).
+Fig. 5. Evolution of Ni3Ti precipitates (red/yellow) and reverted austenite (green) during simulated continuous heating at a heating rate of 10 ◦C/min. The length scales and axis orientations are the same as defined in the RVE shown in Fig. 3.
+Fig. 6. Ni3Ti precipitates (red/yellow)and reverted austenite (green) after 5 h of isothermal ageing. The length scales and axis orientations are the same as defined in
+the RVE shown in Fig. 3.
+Fig. 7 shows the distribution of the von-mises strain eq, corresponding to the snapshots shown in Fig. 5. The important role played by phase transformation-induced plasticity is demonstrated from this figure. It is observed that reverted austenite regions have yielded due to the large internal stresses generated by the transformations. The transformation-induced plastic strains play an important role in stabilizing the reverted austenite. In absence of plasticity, the reverted austenite grains shrink due to the large elastic energy of the martensite to austenite transformations. This underscores the importance of incorporating the effects of plasticity. Further, it should be pointed out that since the precipitates are not allowed to yield, there are no plastic strains observed inside the Ni3Ti precipitates, although some plasticity is observed in the surrounding α′ matrix.
+Fig. 8(A) shows the time evolution of precipitate fractions and Fig. 8 (B) shows the corresponding reverted austenite fraction. The precipitate fraction at T = 400 ◦C increases very slowly and is much lower compared to the equilibrium value of ~ 0.03, even after 5 h of ageing. At T = 475 ◦C and T = 500 ◦C, the precipitate growth is faster. The precipitate fraction reaches the level close to the equilibrium value in approximately 5 h at T = 475 ◦C and 2.5 h at T = 500 ◦C. For the case of T = 600 ◦C, the precipitate fraction overshoots the equilibrium value significantly during the initial continuous heating. During the isothermal hold, it appears that the precipitates are not growing at all. The kinetics during ageing is slow due to a reduced driving force at
+Fig. 7. The distribution of equivalent plastic strain eq corresponding to the microstructures shown in Fig. 6.
+Fig. 8. Evolution of phase fraction of Ni3Ti precipitates (A) and reverted austenite (B) at four different temperatures during isothermal ageing. The temperature was
+ramped up at a heating rate of 10 ◦C/min followed by isothermal hold of 5 h.
+Fig. 9. Evolution of radius (A) and aspect ratio (B) of Ni3Ti precipitates at four different temperatures during isothermal ageing.
+higher temperatures. By examining the local values of the order parameters and compositions inside the precipitates, it is found that compositions are slowly evolving towards local equilibrium, leading to the limited growth of the precipitates. Fig. 8(B) shows the growth of reverted austenite during ageing. Similar to Fig. 8(A), at T = 600 ◦C, the reverted austenite grows rapidly during the initial continuous heating, but there is hardly any growth during the isothermal hold. This is again due to the low driving force. Further, we notice that the equilibrium fraction of reverted austenite is much lower than the corresponding equilibrium fraction at this temperature. This also explains the overshoot of the precipitate fraction at T = 600 ◦C as both the precipitates and the reverted austenite are far from thermodynamic equilibrium. At T = 500 ◦C, the reverted austenite fraction is slowly increasing, but still much lower than the corresponding equilibrium fraction, even after 5 h of ageing. At T = 475 ◦C, the austenite initially grows during the ramping up of temperature but the growth slows down substantially during the isothermal hold. Very little growth of austenite occurs at T = 400 ◦C, which is also clear from Fig. 6.
+The precipitate sizes can be obtained using principal component analysis (PCA), where the shapes of secondary phase particles are approximated as ellipsoids described by major and minor axes (a,b) and length l. Fig. 9(A) shows the time evolution of the precipitate radius during ageing at four different temperatures. The trends of the effective radius are similar to those of the phase fractions. For example, after initial continuous heating, the precipitate size at T = 500 ◦C and T = 600 ◦C does not appear to change during 5 h of ageing. At T = 475 ◦C, the precipitates appear to be growing but at a very slow rate. As discussed in context of the phase fractions, this is due to a reduced driving force. It is useful to examine the aspect ratio of the precipitates defined as ar = 2l/(a+ b). Fig. 9(B) shows the time evolution of precipitate aspect ratio at four different temperatures. Note that at T = 400 ◦C, the aspect ratio is close to 1, which is clear from the small equiaxed precipitates observed at this temperature (Fig. 6). At higher temperatures, the precipitates are larger due to the elastic energy considerations, and the precipitates have the tendency to adopt non-spherical shapes, which is reflected in the larger aspect ratios at higher temperatures. However, shape anisotropy is still low and thus much longer annealing times may be required to observe needle-like precipitates.
+Although, to the best of our knowledge, there is no experimental kinetic data for the evolution of martensitic decomposition as a function of aging time for cases studied here, the slow growth of precipitates/ reversed austenite in the range T = 475 ◦C- 600 ◦C is consistent with the experimental data where the hardness/strength at T = 480 ◦C does not change even after 25 h of annealing [13]. The connection between the precipitate growth and austenite reversion and the strength will be discussed in the next section.
+3.3. Analysis of precipitate strengthening
+Mechanical performance of maraging steels is closely related to the strengthening induced by the nanoscale precipitates. It is important to understand how this strengthening depends on the ageing treatments, which can help in designing heat treatments that can lead to optimal mechanical properties. As discussed above, the microstructure of maraging steels can be quite complex as the phases, such as martensite, reverted austenite and precipitates, can coexist. In the following, we seek to gain insights into the role of precipitate strengthening in the mechanical properties by using the Orowan-Ashby model [14,43]. As shown in Figs. 6 and 8, reverted austenite can grow along with precipitates and can clearly influence the mechanical behavior. To take into account the effect of precipitates as well reversed austenite, we express the yield stress YT of the multiphase microstructure as
+̅̅̅
+r
+YT = (Yα’ +(22)  rb
+Here Yα′ is the yield stress of the martensite and Yγ is the yield stress of the reverted austenite. fα′, fγ and fp are the phase fractions of martensite, reverted austenite and Ni3Ti precipitates, respectively. The average radius of the precipitates is denoted by r and ar is the average aspect ratio. In the above equation, σP incorporates the effect of precipitate strengthening by using the standard Orowan-Ashby formula [14,43]. Note that in the following reference [14], the formula has been modified to describe non-spherical precipitates by including the aspect ratio ar. The quantities fα′, fγ , fp, r and ar have been computed in the phase field simulations for different ageing times and temperatures (section 3.2). If the alloy is quenched to room temperature after ageing, it is reasonable to assume the typical room temperature yield stress values as Yα′ = 1000MPa and Yγ = 250MPa. The burger’s vector is b = 0.286 nm and C44 = 65.7 GPa. Fig. 10(a) shows the variation of yield stress YT as a function of ageing time at four different temperatures (note that the yield strength is computed only during the isothermal part of the heat treatment.).
+Fig. 10. Evolution of YT, the total yield strength of the multi-phase microstructure (A) and corresponding precipitate contribution σP (B) at four different temperatures during isothermal ageing.
+Fig. 10(a) shows that at high temperatures (e.g., T = 600 ◦C), initially, the yield stress shows some enhancement but decreases with increasing time, eventually saturating to a value close to the initial yield stress of the martensite. At T = 500 ◦C, a higher enhancement of strength is observed. The yield stress also decreases upon further ageing, although not as rapidly as the T = 600 ◦C case. At T = 475 ◦C, the yield stress does not show a significant decay and appears to be constant, even after 5 h ageing. Finally, at T = 400 ◦C, although the yield stress does not increase much at short ageing times, it keeps increasing steadily with further ageing. The trends in the temperature dependence of yield stress in Fig. 10(a) are qualitatively consistent with those observed experimentally in hardness measurements on M300 maraging steel [13]. In their work, the hardness monotonically increases with ageing time at temperatures T = 440 ◦C and T = 480 ◦C. At higher temperatures (510 ◦C-650 ◦C), there is a peak hardness and increasing the ageing time leads to a decrease in the hardness. Our results in Fig. 10(a) are qualitatively consistent with their observations. In order to understand the observed temperature dependence, we plot the precipitate strengthening contribution σP at the same corresponding temperatures as shown in Fig. 10(b). No decrease in σP is observed at any of the temperatures. In fact, σP increases with the ageing temperature. By comparing Fig. 10(a), 10(b), 8(a), 8(b) and equation (22), it is clear that the decrease in the strength arises from the growth of reverted austenite rather than the coarsening of the precipitates. Note that a similar conclusion has been arrived after analysis of experimental hardness data for M300 at high temperatures [13].
+Here, we should point out that, quantitatively, our calculations underestimate the strength compared to the experiments. This could be due to the fact that only Ni3Ti precipitates have been included in the current model, whereas actual M300 alloy can form additional precipitates such as Ni3Mo and Fe2Mo. Another factor that may contribute to the underestimation of the strength could be the use of simplified model in equation (22). In principle, a refined model that is able to deal with explicit austenite–martensite interfaces, along with precipitates, may lead to more accurate strength predictions. Nevertheless, the present model provides useful insights into the temperature-dependence of precipitate strengtheing that is generically observed in maraging steels. 4. Conclusions
+It this paper, we have used the phase field approach to simulate the decomposition of α′ martensite in maraging steels during continuous heating and isothermal ageing. Specifically, we have studied the growth of Ni3Ti precipitates and reverted austenite γ from the α′ matrix. A ternary Fe-Ni-Ti system was chosen as the model system. The model was parameterized for 18Ni M300 steel by using a parabolic approximation of the Gibbs free energy data using a thermodynamic database. Similarly, atomic mobilities are also obtained using kinetic databases. Nucleation of precipitates was incorporated using classical nucleation theory while reversed austenite is assumed to grow heterogeneously from the lath boundaries.. Furthermore, we also incorporated an elastoplastic model to account for plastic strains that may arise due to the transformation-induced stresses.
+First, we simulated a continuous heating process to mimic typical dilatometric experiments that are used to find the start and finish temperatures of different phases. These simulations were used to parametrize the nucleation model such that the precipitate start and finish temperatures are comparable to those reported in dilatometry of M300 maraging steel. After parameterizing the nucleation model, we conducted simulations of isothermal ageing at three different temperatures. It is found that at higher temperatures, initially the precipitates grow rapidly during the initial temperature ramping, while the evolution becomes very slow during the isothermal ageing. Significant growth of reverted austenite is also observed at these temperatures. At low temperatures, the precipitate growth is slow and there is very small amount of reverted austenite.
+The data obtained from the phase evolution was used to study the yield stress enhancement by relating the phase fraction and precipitate sizes to an empirical model for precipitate strengthening based on the Orowan-Ashby model. It is found that high temperatures, although initially there is a large enhancement, the strength decreases rapidly due to the increase in the reverted austenite. Typically, a decrease in strength for a larger aging time and a higher temperature (overaging) may be attributed to precipitate coarsening and/or growth of reversed austenite. Our simulations show that austenite reversion seems to play a more dominant role in overaging for the case studied in the present work. At lower temperatures, when the precipitates are smaller but grow steadily, the strength increases monotonically with ageing time. These trends are consistent with those observed in ageing experiments of maraging steels. Here we should remark that the actual magnitudes of the yield strengths may not be accurate due to the simple empirical model that has been used. A more realistic model is needed to make more accurate predictions. It should be pointed out that the microstructures obtained from the phase field simulations can be used as templates for developing more advanced microstructure-property models, which will be an interesting topic of further research.
+Finally, we end the paper with the outlook that the model proposed in the present work could be used to select ageing temperatures and durations to obtain desired mechanical properties. Although in this work we have focused on continuous heating and isothermal treatments, in principle, this approach can be applied to arbitrary thermal cycles such as those observed in additive manufacturing processes and will be another interesting topic for future studies.
+CRediT authorship contribution statement
+Rajeev Ahluwalia: Conceptualization, Investigation, Data curation, Formal analysis, Methodology, Software, Writing – original draft. Jakub Mikula: Investigation, Data curation, Formal analysis, Methodology, Software, Writing – original draft. Yingzhi Zeng: Conceptualization, Investigation, Data curation, Formal analysis, Methodology, Software. Robert Laskowski: Conceptualization, Investigation, Data curation, Formal analysis, Methodology, Software. Kewu Bai: Conceptualization, Investigation, Data curation, Formal analysis, Methodology, Software. Guglielmo Vastola: Conceptualization, Formal analysis, Methodology, Funding acquisition, Project administration. Yong-Wei Zhang: Conceptualization, Formal analysis, Methodology, Writing – original draft, Funding acquisition, Project administration.
+Declaration of Competing Interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+Data availability
+Data will be made available on request.
+Acknowledgements
+The authors gratefully acknowledge the financial support of the A*STAR projects “Industrial Digital Design and Additive Manufacturing Workflows” (A19E1a0097) and “Advanced Models for Additive Manufacturing (AM2) (M22L2b0111). The authors also acknowledge the National Supercomputing Centre and A*STAR Computational Research Centre for use of their computational facilities. Any opinions, findings and conclusions or recommendations expressed in this material are those of the author(s) and do not reflect the views of the A*STAR.
+References
+S. Floreen, The physical metallurgy of maraging steels, Metallurgical Reviews 13
+(1) (1968) 115–128.
+W. Sha, Z. Guo, Maraging steels, CRC Press, 2009.
+U.K. Viswanathan, G.K. Dey, M.K. Asundi, Precipitation hardening in M350 maraging steel, Metall. Trans. A 24A (1993) 2429–2442.
+O. Moshka, M. Pinkas, E. Brosh, V. Ezersky, L. Meshi, Addressing the issue of precipitates in maraging steels- Unambiguous answer, Mater. Sci. Eng. A 638
+(2015) 232–239.
+Z.K. Xu, B. Wang, P. Zhang, Z.F. Zhang, A fast evaluation method for fatigue strength of maraging steel: The minimum strength principle, Mater. Sci. Eng. A 789 (2020) 139659.
+E. Jagle, Z. Sheng, P. Kürnsteiner, S. Ocylok, A. Weisheit, D. Raabe, Comparison of¨ maraging steel micro and nanostructure produced conventionally and by laser additive manufacturing, Materials 10 (1) (2017) 8.
+S. Morito, H. Tanaka, R. Konishi, T. Furuhara, T. Maki, The morphology and crystallography of lath martensite in Fe-C alloys, Acta Mater. 51 (6) (2003)
+1789–1799.
+E.A. Jagle, Choi. Pyuck-Pa, J.V. Humbeeck, Dierk Raabe, Precipitation and austenite reversion of a maraging steel produced by selective laser welding, J. Mater. Res. 29 (2014) 2072–2079.
+F.F. Conde, J.D. Escobar, J.P. Oliveira, A.L. Jardini, W.W. Bose Filho, J.A. Avila, Austenite reversion kinetics and stability during tempering of an additively manufactured maraging 300 steel, Addit. Manuf. 29 (2019) 100804.
+L. Guo, L. Zhang, J. Andersson, O. Ojo, Additive manufacturing of 18% maraging steels: Defect structures and mechanical properties: A review, J. Mater. Sci.
+Technol. 120 (2022) 227–252.
+E.A. Wilson, Quantification of age hardening in an Fe-12Ni-6Mn alloy, Scr. Mater.
+36 (10) (1997) 1179–1185.
+W. Sha, Quantification of age hardening in maraging steels and in an Ni-base superalloy, Scr. Mater. 42 (2000) 549–553.
+J.M. Pardal, S.S.M. Tavares, V.F. Terra, M.R. Dasilva, D.R. Dossantos, Modeling and precipitation hardening during the aging and overaging of 18Ni-Co-Mo-Ti -maraging 300 steel, J. Alloy. Compd. 393 (2005) 109–113.
+E.I. Gallindonava, W.M. Rainforth, P.E.J. Riveira, Predicting microstructure and strength of maraging steels: Elemental optimization, Acta Mater. 117 (2016)
+270–285.
+Y. Wang, A.G. Khachaturyan, Three dimensional field model and computer modeling of martensitic transformations, Acta Mater. 45 (2) (1997) 759–773.
+H.K. Yeddu, A. Malik, J. Agren, G. Amberg, A. Borgenstam, Three dimensional phase field modeling of martensitic microstructural evolution in steels, Acta Materiala 60 (2012) 1538–1547.
+O. Schcyglo, G. Du, J.K. Engles, I. Steinbach, Acta Mater. 179 (2019) 415–424.
+R. Ahluwalia, J. Mikula, R. Laskowski, S.S. Quek, Phase field simulation of martensitic transformation induced plasticity in steel, Phys. Rev. Mat. 4 (2020), 103607.
+Y. Ji, L.Q. Chen, Phase field model of stoichiometric compound and solution phases, Acta Mater. 234 (2022), 118007.
+R. Laskowski, K. Wang, R. Ahluwalia, K. Bai, G. Vastola, Y.-W. Zhang, Phase field model for multi-phase alloys under arbitrary thermal history: an application to IN718 super-alloy, J. Alloy. Compd. 861 (2021) 158630.
+A. Yamanaka, Phase-field modeling and simulation of solid-state phase transformations in steel, ISIJ Int. 63 (2023) 395–406.
+H.K. Yeddu, T. Lookman, A. Saxena, Reverse phase transformation of martensite to austenite in stainless steels: a 3D phase-field study, J. Mater. Sci. 49 (10) (2014)
+3642–3651.
+X. Zhang, G. Shen, C. Li, J. Gu, Phase field simulation of austenite reversion in a Fe- 9.6Ni-7.1Mn (at %) martensitic steel governed by a coupled diffusional/displacive mechanism, Mater. Des. 188 (2020) 108426.
+P. Song, Y. Ji, L. Chen, W. Liu, C. Zhang, L.Q. Chen, Z. Yang, Phase field simulation of austenite growth behavior: Insights into austenite memory phenomenon, Comput. Mater. Sci 117 (2016) 139–150.
+E. Borukovich, G. Du, M. Stratmann, M. Boeff, O. Schcyglo, A. Hartmeir, I. Steinbach, Materials 9 (2016) 673.
+C.O. Yenusah, Y. Ji, Y. Liu, T.W. Stone, M.F. Horstemeyer, L.-Q. Chen, L. Chen, Three-dimensional Phase-field simulation of γ′′ precipitation kinetics in Inconel 625 during heat, treatment, Comput. Mater. Sci 187 (2021) 110123.
+Y. Ji, B. Ghaffari, M. Li, L.-Q. Chen, Phase-field modeling of θ′ precipitation kinetics in 319 aluminum alloys, Comput. Mater. Sci 151 (2018) 84–94.
+N. Zhou, D.C. Lv, H.L. Zhang, D. McAllister, F. Zhang, M.J. Mills, Y. Wang, Computer simulation of phase transformation and plastic deformation in IN718 superalloy: Microstructural evolution during precipitation, Acta Mater. 65 (2014) 270–286.
+S.G. Kim, W.T. Kim, T. Suzuki, Phase field model for binary alloys, Phys. Rev. B 60 (6) (1999) 7186–7197.
+J. Kundin, D. Raabe, H. Emmerich, A phase-field model for incoherent martensitic transformations including plastic accommodation processes in the austenite, J. Mech. Phys. Solids 59 (10) (2011) 2082–2102.
+J. De Keyzer, G. Cacciamani, N. Dupin, P. Wollants, Thermodynamic modeling and optimization of the Fe-Ni-Ti system, Calphad 33 (1) (2009) 109–123.
+Q. Wu, G. Xu, H. Chang, L. Zhou, Y. Cui, Assessment of diffusional mobility for bcc phase of Ti-Al-Ni ternary system, Calphad 71 (2020), 102203.
+Y. Chen, J. Li, B. Tang, H. Kou, J. Segurado, Y. Cui, Computational study of atomic mobility for bcc phase in Ti-Al-Fe system, Calphad 46 (2014) 205–212.
+NIST Ni-based diffusional mobility database.
+M. Shmulevitsh, L. Meshi, M. Pinkas, R.Z. Shneck, J. Mater. Sci. 50 (2015)
+4970–4979.
+T. Shinozaki, Y. Tomota, T. Fukino, T. Suzuki, Microstructure Evolution during Reverse Transformation of Austenite from Tempered Martensite in Low Alloy Steel, Shinozaki et al, ISIJ Int. 57 (2017) 533–539.
+J. Simo, R. Taylor, Consistent tangent operators for rate-independent elastoplasticity, Comput. Methods Appl. Mech. Eng. 48 (1) (1985) 101–118.
+T. Belytschko, W. Liu, and B. Moran, Nonlinear Finite Elements for Continua and Structures. Nonlinear Finite Elements for Continua and Structures, Wiley, 2000.
+M. Seif, J. Main, J. Weigand, F. Sadek, L. Choe, C. Zhang, J. Gross, W. Luecke and D. McColskey, Temperature-dependent modeling for structural steels: Formulation and application, https://doi.org/10.6028/NIST.TN.1907.
+J.D. Robson, Modelling the evolution of particle size distribution during nucleation, growth and coarsening, Mater. Sci. Technol. 20 (4) (2004) 441–448.
+M. Krol, P. Snop´ inski, A. Czech, The phase transitions in selective laser-melted 18-´ Ni (300-grade) maraging steel, J. Therm. Anal. Calorim. 142 (2) (2020)
+1011–1018.
+A.G. Reis, D.A.P. Reis, A.J. Abdalla, J. Otubo and H.R.Z. Sandim, A dilatometric study of the continuous heating transformations in maraging 300 steel, IOP Conference Series: Materials Science and Engineering 97 (2015), 012006 https:// doi.org/10.6028/NIST.TN.1907.
+E.I. Gallindonava, P.E.J. Rivera-Diaz-Castillo, A model for the microstructure behavior and strength evolution in lath martensite, Acta Mater. 98 (2015) 81–93.
