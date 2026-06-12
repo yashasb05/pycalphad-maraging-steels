@@ -129,6 +129,7 @@ n_g = 1.0                # austenite: site-saturated on lath boundaries [L-KB]
 
 # ================================================================
 #  CONSTANTS TO SET THE LIMITS / CAPS
+#  (Verified from Pardal et al and Jagle et al)
 #  (Paper-derived values — the binary CALPHAD DB lacks Co/Mo and
 #   underestimates precipitate fraction / overestimates austenite)
 # ================================================================
