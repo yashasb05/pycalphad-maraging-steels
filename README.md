@@ -89,7 +89,7 @@ After a 5-hour isothermal ageing treatment (preceded by a $10^\circ\text{C/min}$
     ```bash
     python precompute_thermo.py
     ```
-    This computes the full timeseries for the four aging temperatures and saves the data.
+    
 2.  **Run Kinetics Simulation**:
     ```bash
     python update_kinetics.py
