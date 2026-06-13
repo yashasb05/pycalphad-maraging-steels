@@ -15,8 +15,8 @@ This repository contains a fully physics-first, thermodynamic & kinetics simulat
 ## 2. Thermodynamic Data Extraction
 
 To run a physics-first model, we query the Fe-Ni-Ti ternary thermodynamic database (`DeKeyzer2009_FeNiTi.tdb`) using `pycalphad`. Because maraging steel ageing is a metastable process (the equilibrium phases are different from the ones that form kinetically), we extract:
-1.  **Metastable Precipitate Limit (`precip_f_ETA`)**: BCC + $\eta$-$\text{Ni}_3\text{Ti}$ equilibrium (with FCC suspended).
-2.  **Austenite Interface Solute Limits (`aust_C_Ni_BCC`, `aust_C_Ni_FCC`)**: Metastable BCC + FCC equilibrium (with $\eta$-$\text{Ni}_3\text{Ti}$ suspended).
+1.  **Metastable Precipitate Limit (`precip_f_ETA`)**: BCC + Ni3Ti equilibrium (with FCC suspended).
+2.  **Austenite Interface Solute Limits (`aust_C_Ni_BCC`, `aust_C_Ni_FCC`)**: Metastable BCC + FCC equilibrium (with Ni3Ti suspended).
 3.  **Bulk FCC Phase Fraction (`bulk_f_FCC`)**: The maximum possible austenite fraction at a given temperature.
 
 These values are precalculated on a 5°C grid in `precompute_thermo.py` and saved to `precomputed_thermo.json` to enable rapid runtime linear interpolation.
